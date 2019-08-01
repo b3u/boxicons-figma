@@ -1,0 +1,37 @@
+<h2>Rectangle Creator</h2>
+<p>Type:
+  <select id="icon-type">
+    <option value="regular" selected>Regular</option>
+    <option value="solid">Solid</option>
+    <option value="logos">Logos</option>
+  </select>
+</p>
+<p>Count: <input id="icon-name" value="edit" type="text"></p>
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+<script>
+
+document.getElementById('create').onclick = () => {
+  let type = document.getElementById('icon-type').value;
+  let name = document.getElementById('icon-name').value;
+  
+  if(type == 'regular') {
+    name = 'bx-' + name
+  } else if(type == 'solid') {
+    name = 'bxs-' + name
+  } else if (type == 'logos') {
+    name = 'bxl-' + name
+  }
+  fetch(`https://boxicons.com/static/img/svg/${type}/${name}.svg`)
+  .then(res => {
+    return res.text();
+  }).then(svg => {
+    parent.postMessage({ pluginMessage: { type: 'create-svg', svg } }, '*')
+  })
+}
+
+document.getElementById('cancel').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+}
+
+</script>
